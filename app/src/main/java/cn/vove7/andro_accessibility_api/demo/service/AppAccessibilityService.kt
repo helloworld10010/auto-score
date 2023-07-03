@@ -3,6 +3,7 @@ package cn.vove7.andro_accessibility_api.demo.service
 import android.util.Log
 import cn.vove7.andro_accessibility_api.AccessibilityApi
 import cn.vove7.auto.core.AppScope
+import timber.log.Timber
 
 /**
  * # MyAccessibilityService
@@ -29,7 +30,7 @@ class AppAccessibilityService : AccessibilityApi() {
 
     //页面更新回调
     override fun onPageUpdate(currentScope: AppScope) {
-        Log.d(TAG, "onPageUpdate: $currentScope")
+        Timber.d(TAG, "onPageUpdate: $currentScope")
     }
 
     companion object {

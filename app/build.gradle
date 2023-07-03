@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "cn.vove7.andro_accessibility_api.demo"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 

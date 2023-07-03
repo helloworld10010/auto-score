@@ -56,7 +56,7 @@ class ForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(1999, getNotification())
+//        startForeground(1999, getNotification())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

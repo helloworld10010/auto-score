@@ -1,8 +1,10 @@
 package cn.vove7.andro_accessibility_api.demo.actions
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Path
 import android.graphics.RectF
+import android.media.AudioManager
 import android.os.Build
 import android.os.SystemClock
 import android.util.Log
@@ -619,5 +621,66 @@ class ContinueGestureAction(override val name: String = "ContinueGesture") : Act
             AutoGestureDescription.Builder().addStroke(continueStroke).build(), null, null)
         delay(1500)
     }
+}
+
+const val TARGET_PROCESS = "com.nn.accelerator.community"
+var upActionNum = 3
+var CLOSE_BUTTON_POSITION = kotlin.Pair(986,109)
+class NNScoreAction(override val name: String="NN_SCORE") : Action(){
+
+    override suspend fun run(act: ComponentActivity) {
+
+        toast("开始任务，准备静音..")
+        val audio = act.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val musicVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC)
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC,0,AudioManager.FLAG_SHOW_UI)
+
+        var num = 0
+        stopBackgroundProcess(act, TARGET_PROCESS)
+        delayRandom(2000)
+        act.startActivity(act.packageManager.getLaunchIntentForPackage(TARGET_PROCESS))
+        if(waitForApp(TARGET_PROCESS,5000).also { toast( if(it) "success" else "fail") }) {
+            delayRandom(7000)
+            withText("我的").tryClick()
+            delayRandom(1200)
+
+            withText("赚取积分").tryClick()
+            delayRandom(1000)
+
+            while (true) {
+                val node = withText("去完成").findFirst() ?: break
+                node.tryClick()
+                delayRandom(1000)
+                if(num < upActionNum) {
+                    flush()
+                    num++
+                }
+
+                delayRandom(75000)
+                toast("点击关闭 x:${CLOSE_BUTTON_POSITION.first} y:${CLOSE_BUTTON_POSITION.second}")
+                click(CLOSE_BUTTON_POSITION.first, CLOSE_BUTTON_POSITION.second)
+
+
+                delayRandom(2000)
+            }
+            toast("任务完成，恢复音量")
+            audio.setStreamVolume(AudioManager.STREAM_MUSIC,musicVolume,AudioManager.FLAG_SHOW_UI)
+            delayRandom(2000)
+            home()
+        }
+    }
+
+    private suspend fun flush(){
+        withContext(Dispatchers.IO){
+            if (!gesture(200, Path().apply {
+                    moveTo(548f, 1371f)
+                    lineTo(567f, 544f)
+                })) {
+                toast("打断")
+            }
+        }
+
+    }
+
 }
 

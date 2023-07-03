@@ -1,9 +1,13 @@
 package cn.vove7.andro_accessibility_api.demo
 
+import android.app.ActivityManager
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import kotlinx.coroutines.*
+import java.util.Random
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -41,8 +45,28 @@ fun runOnUi(block: () -> Unit) {
     }
 }
 
-
+suspend fun delayRandom(timeMillis: Long){
+    val randomTime = (-200..700).random()
+    delay(timeMillis + randomTime.toLong())
+}
 fun toast(m: String) =
     runOnUi {
         Toast.makeText(DemoApp.INS, m, Toast.LENGTH_SHORT).show()
     }
+
+fun stopBackgroundProcess(act:ComponentActivity,packageName:String){
+    val am = act.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    am.killBackgroundProcesses(packageName)
+}
+
+fun getClosePosition(ctx:Context):String{
+    val preferences = ctx.getSharedPreferences("sp_database", Context.MODE_PRIVATE)
+    return preferences.getString("position","986.109") ?:""
+}
+
+fun saveClosePosition(ctx:Context,position:String){
+    val preferences = ctx.getSharedPreferences("sp_database", Context.MODE_PRIVATE)
+    preferences.edit().apply {
+        putString("position",position)
+    }.apply()
+}

@@ -28,7 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:text="123456"
+        android:text="986.109"
+        android:hint="输入‘关闭’按钮坐标"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/work_mode" />
 
     <ListView

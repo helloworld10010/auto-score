@@ -33,11 +33,11 @@ class DemoApp : Application() {
             AppAccessibilityService::class.java
         )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(Intent(this, ForegroundService::class.java))
-        } else {
-            startService(Intent(this, ForegroundService::class.java))
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(Intent(this, ForegroundService::class.java))
+//        } else {
+//            startService(Intent(this, ForegroundService::class.java))
+//        }
         Timber.i("DemoApp create.")
     }
 }

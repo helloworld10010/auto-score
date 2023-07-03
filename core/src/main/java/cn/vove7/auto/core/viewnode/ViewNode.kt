@@ -48,22 +48,26 @@ class ViewNode : ViewOperation, Comparable<ViewNode> {
 
         private const val ROOT_TAG = "ViewNodeRoot"
 
-        fun rootNodesOfAllWindows(): ViewChildList =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ViewChildList().also { list ->
-                    AutoApi.windows()?.sortedByDescending {
-                        if (it.isActive) Int.MAX_VALUE else it.layer
-                    }?.forEach { win ->
-                        list.add(
-                            win.root?.let { r -> ViewNode(r.also(AccessibilityNodeInfo::refresh)) }
-                        )
-                    } ?: list.add(activeWinNode())
-                }
-            } else {
-                ViewChildList().also { list ->
-                    list.add(activeWinNode())
-                }
-            }
+        fun rootNodesOfAllWindows(): ViewChildList {
+
+        //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val viewCHildList1 = ViewChildList().also { list ->
+            AutoApi.windows()?.sortedByDescending {
+                if (it.isActive) Int.MAX_VALUE else it.layer
+            }?.forEach { win ->
+                list.add(
+                    win.root?.let { r -> ViewNode(r.also(AccessibilityNodeInfo::refresh)) }
+                )
+            } ?: list.add(activeWinNode())
+        }
+
+        //            } else {
+        val viewChildList2 = ViewChildList().also { list ->
+            list.add(activeWinNode())
+        }
+//            }
+        return viewChildList2
+    }
 
         /**
          * 第一层为 windows
